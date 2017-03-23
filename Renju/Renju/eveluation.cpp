@@ -1,6 +1,7 @@
 #include "eveluation.h"
 #include"define.h"
 #include<string.h>
+#include<stdio.h>
 
 int PosValue[BOARD_NUM][BOARD_NUM] =
 {
@@ -38,9 +39,9 @@ int Eveluation::evelutaion(int position[][BOARD_NUM], int isWhite)
 {
 	int ChessType;
 	count++;//计数器+1
-			//将数组赋值
-	memset(TypeRecord, UNANALYSISED, BOARD_NUM * 4 * 4);
-	memset(TypeCount, 0, 40 * 4);
+
+	memset(TypeRecord, UNANALYSISED, sizeof(TypeRecord));//对数组初始化赋值
+	memset(TypeCount, 0, sizeof(TypeCount));
 
 	//对棋盘上的棋子在四个方向上面进行分析
 	for (int i = 0; i < BOARD_NUM; i++)
@@ -107,20 +108,31 @@ int Eveluation::evelutaion(int position[][BOARD_NUM], int isWhite)
 				}
 			}
 
-	//如果已经五子连珠，返回极值
+	/*
+	由于采用负极大极小值，所以现在开始自己赢了应该返回负值
+	*/
 	if (isWhite)
 	{
 		if (TypeCount[WHITE][FIVE])
-			return 9999;
-		if (TypeCount[BLACK][FIVE])
+		{
 			return -9999;
+		}
+
+		if (TypeCount[BLACK][FIVE])
+		{
+			return 9999;
+		}
 	}
-	else
+	else//黑子
 	{
 		if (TypeCount[BLACK][FIVE])
-			return 9999;
-		if (TypeCount[WHITE][FIVE])
+		{
 			return -9999;
+		}
+		if (TypeCount[WHITE][FIVE])
+		{
+			return 9999;
+		}
 	}
 
 	//两个冲四相当于一个活四
@@ -128,6 +140,7 @@ int Eveluation::evelutaion(int position[][BOARD_NUM], int isWhite)
 	{
 		TypeCount[WHITE][FOUR]++;
 	}
+
 	if (TypeCount[BLACK][SFOUR] > 1)
 	{
 		TypeCount[BLACK][FOUR]++;
@@ -136,187 +149,176 @@ int Eveluation::evelutaion(int position[][BOARD_NUM], int isWhite)
 	int white_value = 0;
 	int black_value = 0;
 
-	if (isWhite)
+	if (TypeCount[WHITE][SFOUR] > 1)
+		TypeCount[WHITE][FOUR]++;
+
+	if (TypeCount[BLACK][SFOUR] > 1)
+		TypeCount[BLACK][FOUR]++;
+
+	if (isWhite==WHITE)
 	{
-		if (TypeCount[WHITE][FOUR])
+
+		if (TypeCount[WHITE][FOUR])//白胜
 		{
-			return 9990;
+			white_value+=7000;
 		}
 
-		if (TypeCount[WHITE][SFOUR])
+		if (TypeCount[WHITE][SFOUR])//白胜
 		{
-			return 9980;
+			white_value += 7000;
 		}
 
-		if (TypeCount[BLACK][FOUR])
+		if (TypeCount[BLACK][FOUR])//黑胜
 		{
-			return -9970;
+			black_value += 7000;
+		}
+
+
+		if (TypeCount[BLACK][SFOUR] && TypeCount[BLACK][THREE])//黑胜
+		{
+			black_value += 6000;
 		}
 
 		if (TypeCount[WHITE][THREE] && TypeCount[BLACK][SFOUR] == 0)
 		{
-			return 9950;
+			white_value += 6000;
 		}
 
-		if (TypeCount[BLACK][THREE] > 1 && TypeCount[WHITE][SFOUR] == 0 && TypeCount[WHITE][THREE] == 0 && TypeCount[WHITE][STHREE] == 0)
+		if (TypeCount[BLACK][THREE] > 1 &&
+			TypeCount[WHITE][SFOUR] == 0 &&
+			TypeCount[WHITE][THREE] == 0 &&
+			TypeCount[WHITE][STHREE] == 0)
 		{
-			return -9940;
+			black_value += 6000;
 		}
 
-		//白子每多一个活三，值加2000
+
 		if (TypeCount[WHITE][THREE] > 1)
-		{
-			white_value += 2000;
-		}
-		else if (TypeCount[WHITE][THREE] == 1)
-		{
-			white_value += 200;
+			white_value+= 2000;
+		else {
+			if (TypeCount[WHITE][THREE])
+				white_value += 200;
 		}
 
-		//黑子有多个活三，每多一个加500；
 		if (TypeCount[BLACK][THREE] > 1)
-		{
 			black_value += 500;
+		else {
+			if (TypeCount[BLACK][THREE])
+				black_value += 100;
 		}
-		else if (TypeCount[BLACK][THREE] == 1)
-		{
-			black_value += 100;
-		}
+
 
 		if (TypeCount[WHITE][STHREE])
-		{
-			white_value += TypeCount[WHITE][STHREE] * 10;
-		}
+			white_value += TypeCount[WHITE][STHREE] * 20;
 
 		if (TypeCount[BLACK][STHREE])
-		{
-			black_value += TypeCount[BLACK][STHREE] * 10;
-		}
+			black_value += TypeCount[BLACK][STHREE] * 20;
 
 		if (TypeCount[WHITE][TWO])
-		{
-			white_value += TypeCount[WHITE][TWO];
-		}
+			white_value += TypeCount[WHITE][TWO] * 5;
 
 		if (TypeCount[BLACK][TWO])
-		{
-			black_value += TypeCount[BLACK][TWO];
-		}
+			black_value += TypeCount[BLACK][TWO] * 5;
 
 		if (TypeCount[WHITE][STWO])
-		{
-			white_value += TypeCount[WHITE][STWO];
-		}
+			white_value += TypeCount[WHITE][STWO]*2;
 
 		if (TypeCount[BLACK][STWO])
-		{
-			black_value += TypeCount[BLACK][STWO];
-		}
+			black_value += TypeCount[BLACK][STWO]*2;
+
 
 	}
-	else//轮到黑棋走
+	else//轮到黑子
 	{
 		if (TypeCount[BLACK][FOUR])
 		{
-			return 9990;
+			black_value += 7000;
 		}
 
 		if (TypeCount[BLACK][SFOUR])
 		{
-			return 9980;
+			black_value += 7000;
 		}
 
 		if (TypeCount[WHITE][FOUR])
 		{
-			return -9970;
+			white_value += 7000;
 		}
 
 		if (TypeCount[WHITE][SFOUR] && TypeCount[WHITE][THREE])
 		{
-			return -9960;
+			white_value += 6000;
 		}
 
 		if (TypeCount[BLACK][THREE] && TypeCount[WHITE][SFOUR] == 0)
 		{
-			return 9950;
+			black_value += 6000;
 		}
 
-		if (TypeCount[WHITE][THREE] > 1 && TypeCount[BLACK][SFOUR] == 0 && TypeCount[BLACK][THREE] == 0 && TypeCount[BLACK][STHREE] == 0)
+		if (TypeCount[WHITE][THREE] > 1 &&TypeCount[BLACK][SFOUR] == 0 &&TypeCount[BLACK][THREE] == 0 &&TypeCount[BLACK][STHREE] == 0)
 		{
-			return -9940;
+			black_value += 6000;
 		}
 
 		if (TypeCount[BLACK][THREE] > 1)
 			black_value += 2000;
-		else if (TypeCount[BLACK][THREE] == 1)
-		{
-			black_value += 200;
+		else {
+			if (TypeCount[BLACK][THREE])
+				black_value += 200;
 		}
 
 		if (TypeCount[WHITE][THREE] > 1)
-		{
 			white_value += 500;
-		}
-		else if (TypeCount[WHITE][THREE] == 1)
-		{
-			white_value += 100;
+		else {
+			if (TypeCount[WHITE][THREE])
+				white_value += 100;
 		}
 
-		if (TypeCount[BLACK][THREE] > 1)
-		{
-			black_value += 500;
-		}
-		else if (TypeCount[BLACK][THREE] == 1)
-		{
-			black_value += 100;
-		}
-		//每个眠三加10
+
+
 		if (TypeCount[WHITE][STHREE])
-		{
-			white_value += TypeCount[WHITE][STHREE] * 10;
-		}
+			white_value += TypeCount[WHITE][STHREE] * 20;
 
 		if (TypeCount[BLACK][STHREE])
-		{
-			black_value += TypeCount[BLACK][STHREE] * 10;
-		}
+			black_value += TypeCount[BLACK][STHREE] * 20;
 
 		if (TypeCount[WHITE][TWO])
-		{
-			white_value += TypeCount[WHITE][TWO];
-		}
-
-		if (TypeCount[BLACK][TWO])
-		{
-			black_value += TypeCount[BLACK][TWO];
-		}
-
-		if (TypeCount[WHITE][STWO])
-		{
-			white_value += TypeCount[WHITE][STWO];
-		}
+			white_value += TypeCount[WHITE][TWO] * 5;
 
 		if (TypeCount[BLACK][STWO])
-		{
-			black_value += TypeCount[BLACK][STWO];
-		}
+			black_value += TypeCount[BLACK][TWO] * 5;
+
+		if (TypeCount[WHITE][STWO])
+			white_value+= TypeCount[WHITE][STWO]*2;
+
+		if (TypeCount[BLACK][STWO])
+			black_value += TypeCount[BLACK][STWO]*2;
+
 	}
 
-	//加上所有棋子的位置值
 	for (int i = 0; i < BOARD_NUM; i++)
 		for (int j = 0; j < BOARD_NUM; j++)
 		{
 			ChessType = position[i][j];
-			if (ChessType == WHITE)
-				white_value += PosValue[i][j];
-			else
-				black_value += PosValue[i][j];
+			if (ChessType != NOCHESS)
+			{
+				if (ChessType == BLACK)//当前的值加上本身属于的值
+					black_value += PosValue[i][j];
+				else
+					white_value += PosValue[i][j];
+
+
+			}
 		}
 
-	if (isWhite)
-		return white_value - black_value;
+	if (isWhite == WHITE)
+	{
+		return black_value - white_value; 
+	}
 	else
-		return black_value - white_value;
+	{
+		return white_value - black_value;
+	}
 }
 
 //分析棋盘上面水平方向的棋局
@@ -341,7 +343,7 @@ int Eveluation::AnalysisVertical(int position[][BOARD_NUM], int i, int j)
 	{
 		temp[s] = position[s][j];
 	}
-	AnalysisLine(temp, 15, i);
+	AnalysisLine(temp, BOARD_NUM, i);
 
 	for (int s = 0; s < BOARD_NUM; s++)
 	{
@@ -351,17 +353,17 @@ int Eveluation::AnalysisVertical(int position[][BOARD_NUM], int i, int j)
 }
 
 
-//分析做对角线的棋局
+//分析左对角线的棋局
 int Eveluation::AnalysisLeft(int position[][BOARD_NUM], int i, int j)
 {
 	int temp[BOARD_NUM];
-	int x, y, k;
-	if (i < j)
+	int x, y, k,pos;
+	if (i < j)//上三角
 	{
 		y = 0;
 		x = j - i;
 	}
-	else
+	else//下三角
 	{
 		y = i - j;
 		x = 0;
@@ -369,7 +371,7 @@ int Eveluation::AnalysisLeft(int position[][BOARD_NUM], int i, int j)
 
 	for (k = 0; k < BOARD_NUM; k++)
 	{
-		if (y + k > 14 || x + k>14)
+		if (y + k > 14 || x + k > 14)
 			break;
 		temp[k] = position[y + k][x + k];
 	}
@@ -390,31 +392,31 @@ int Eveluation::AnalysisLeft(int position[][BOARD_NUM], int i, int j)
 int Eveluation::AnalysisRight(int position[][BOARD_NUM], int i, int j)
 {
 	int temp[BOARD_NUM];
-	int x, y, k;
-	if (i + j < 15)
+	int x, y, k,pos;
+	if (i + j >14)
 	{
-		y = 0;
-		x = i + j;
+		y = 14;
+		x = i + j - 14;
 	}
 	else
 	{
-		y = i + j - 14;
-		x = 14;
+		x = 0;
+		y = i + j;
 	}
 
 	for (k = 0; k < BOARD_NUM; k++)
 	{
-		if (y + k > 14 || x - k < 0)
+		if (y - k <0 || x + k > 14)
 			break;
-		temp[k] = position[y + k][x - k];
+		temp[k] = position[y - k][x + k];
 	}
-	AnalysisLine(temp, k, j - y);
+	AnalysisLine(temp, k, j - x);
 
 	for (int s = 0; s < k; s++)
 	{
 		if (LineRecord[s] != UNANALYSISED)
 		{
-			TypeRecord[y + s][x - s][3] = LineRecord[s];
+			TypeRecord[y - s][x+s][3] = LineRecord[s];
 		}
 	}
 
@@ -431,15 +433,16 @@ int Eveluation::AnalysisLine(int position[], int Length, int pos)
 	int leftfour;
 	if (Length < 5)
 	{
-		memset(LineRecord, ANALYSIED, Length);
+		//直接填写Length不行
+		memset(LineRecord, ANALYSIED, sizeof(int)*Length);
 		return 0;
 	}
 
 	AnalyPos = pos;
-	memset(LineRecord, UNANALYSISED, 30);
+	memset(LineRecord, UNANALYSISED, sizeof(int) * 30);
 	//将某一行的值复制到AnalyLine
-	memcpy(AnalyLine, position, Length);
-	Length--;
+	memcpy(AnalyLine, position, sizeof(int)*Length);
+	Length--;//数组的最大下标
 	ChessType = AnalyLine[pos];
 	LeftEdge = AnalyPos;
 	RightEdge = AnalyPos;
@@ -448,13 +451,15 @@ int Eveluation::AnalysisLine(int position[], int Length, int pos)
 	{
 		if (AnalyLine[LeftEdge - 1] != ChessType)
 			break;
+
 		LeftEdge--;
 	}
 
-	while (RightEdge < 14)
+	while (RightEdge < Length)
 	{
 		if (AnalyLine[RightEdge + 1] != ChessType)
 			break;
+
 		RightEdge++;
 	}
 
@@ -464,7 +469,7 @@ int Eveluation::AnalysisLine(int position[], int Length, int pos)
 	//推断能走的范围
 	while (LeftRange > 0)
 	{
-		//如果不是对手棋子，就一直探索下去
+		//如果不是对方棋子，则归于可走范围   o_oo类型
 		if (AnalyLine[LeftRange - 1] == !ChessType)
 			break;
 		LeftRange--;
@@ -479,21 +484,26 @@ int Eveluation::AnalysisLine(int position[], int Length, int pos)
 
 	if (rightRange - LeftRange < 4)
 	{
+		//无论怎么走都不能连成五子
 		for (int i = LeftRange; i <= rightRange; i++)
-			LineRecord[i] = AnalyLine[i];
+			LineRecord[i] = ANALYSIED;
 		return FALSE;
 	}
 
 	for (int k = LeftEdge; k <= RightEdge; k++)
-		LineRecord[k] = AnalyLine[k];
+	{
+		//分析连续区域
+		LineRecord[k] = ANALYSIED;
+	}
 
-	if (RightEdge - LeftEdge > 3)
+	if (RightEdge - LeftEdge == 4)
 	{
 		LineRecord[pos] = FIVE;
 		return FIVE;
 	}
 
 	//四连
+	leftfour = FALSE;
 	if (RightEdge - LeftEdge == 3)
 	{
 		if (LeftEdge > 0)
@@ -506,21 +516,21 @@ int Eveluation::AnalysisLine(int position[], int Length, int pos)
 		{
 			if (AnalyLine[RightEdge + 1] == NOCHESS)
 			{
-				if (leftfour)
-					LineRecord[pos] = FOUR;
-				else
+				if (leftfour)//_oooo_
+					LineRecord[pos] = FOUR;//现在是标记当前分析点的位置
+				else//|oooo_或xoooo_
 					LineRecord[pos] = SFOUR;
 			}
 			else
 			{
-				if (leftfour)
+				if (leftfour)//_oooox
 					LineRecord[pos] = SFOUR;
 			}
 		}
 		else
 		{
-			if (leftfour)
-				LineRecord[pos] = FOUR;
+			if (leftfour)// _oooo|
+				LineRecord[pos] = SFOUR;
 		}
 
 		return LineRecord[pos];
@@ -529,59 +539,58 @@ int Eveluation::AnalysisLine(int position[], int Length, int pos)
 	//如果棋子三连的话
 	if (RightEdge - LeftEdge == 2)
 	{
-		int leftthree = FALSE;
+		int leftthree = FALSE;//表示左边是否可走
 		if (LeftEdge > 0)
 		{
 			if (AnalyLine[LeftEdge - 1] == NOCHESS)
 			{
-				leftthree = TRUE;
-				if (AnalyLine[LeftEdge - 2] == ChessType)
+				if (LeftEdge > 1 && AnalyLine[LeftEdge - 2] == ChessType)//o_ooo
 				{
 					LineRecord[LeftEdge] = SFOUR;
 					LineRecord[LeftEdge - 2] = ANALYSIED;
 				}
-				/*	else
+				else//_ooo
 				{
-				leftthree = TRUE;
-				}*/
+					leftthree = TRUE;
+				}
 			}
-			else
+			else//xooo|  xooox
 			{
-				if (RightEdge == Length || AnalyLine[RightEdge + 1] == NOCHESS)
+				if (RightEdge == Length || AnalyLine[RightEdge + 1] != NOCHESS)//位置错误
 					return FALSE;
 			}
 		}
 
-		if (RightEdge < Length)
+		if (RightEdge < Length)//右边有空位置
 		{
-			if (AnalyLine[RightEdge + 1] == NOCHESS)
+			if (AnalyLine[RightEdge + 1] == NOCHESS)//
 			{
-				if (AnalyLine[RightEdge + 2] == ChessType)
-				{
+				if (RightEdge < Length - 1 && AnalyLine[RightEdge + 2] == AnalyLine[RightEdge])
+				{// ooo_o眠四
 					LineRecord[RightEdge] = SFOUR;
 					LineRecord[RightEdge + 2] = ANALYSIED;
 				}
 				else
 				{
-					if (leftthree)
+					if (leftthree)//_ooo_
 					{
 						LineRecord[RightEdge] = THREE;
 					}
-					else
+					else//|ooo_或xooo_
 					{
 						LineRecord[RightEdge] = STHREE;
 					}
 				}
 			}
-			else//右边有棋子
+			else//右边有对方棋子
 			{
-				//如果是活三或者活四之类的，只用记录下一个结点就行了。
-				if (LineRecord[LeftEdge] == SFOUR)
+
+				if (LineRecord[LeftEdge] == SFOUR)//o_ooox
 				{
 					return LineRecord[LeftEdge];
 				}
 
-				if (leftthree)
+				if (leftthree)//_ooox
 				{
 					LineRecord[pos] = STHREE;
 				}
@@ -592,12 +601,12 @@ int Eveluation::AnalysisLine(int position[], int Length, int pos)
 		else
 		{
 			//右边到底了，不能继续下
-			if (LineRecord[LeftEdge] == SFOUR)
+			if (LineRecord[LeftEdge] == SFOUR)//o_ooo|
 			{
 				return LineRecord[LeftEdge];
 			}
 
-			if (leftthree)
+			if (leftthree)// _ooo
 			{
 				LineRecord[pos] = STHREE;
 			}
@@ -613,29 +622,25 @@ int Eveluation::AnalysisLine(int position[], int Length, int pos)
 		int leftthree = FALSE;
 		if (LeftEdge > 2)
 		{
-			//如果左边没棋子
 			if (AnalyLine[LeftEdge - 1] == NOCHESS)
 			{
-				if (AnalyLine[LeftEdge - 2] == ChessType)
+				if (AnalyLine[LeftEdge - 2] == AnalyLine[LeftEdge])
 				{
-					if (AnalyLine[LeftEdge - 3] == ChessType)
+					if (AnalyLine[LeftEdge - 3] == ChessType)//oo_oo
 					{
 						AnalyLine[LeftEdge - 3] = ANALYSIED;
 						AnalyLine[LeftEdge - 2] = ANALYSIED;
 						AnalyLine[LeftEdge] = SFOUR;
 					}
-					else
-					{
-						if (AnalyLine[LeftEdge - 3] == NOCHESS)
-						{
-							LineRecord[LeftEdge - 2] = ANALYSIED;
-							LineRecord[LeftEdge] = STHREE;
-						}
+					else//当AnalyLine[LeftEdge-3]为空，_o_oo,有敌方棋子时xo_oo
+					{						
+						LineRecord[LeftEdge - 2] = ANALYSIED;
+						LineRecord[LeftEdge] = STHREE;
 					}
 				}
-				else
+				else//__oo或x_oo
 				{
-					lefttwo = TRUE;
+					lefttwo = TRUE;//左边可落子
 				}
 			}
 		}
@@ -644,9 +649,9 @@ int Eveluation::AnalysisLine(int position[], int Length, int pos)
 		{
 			if (AnalyLine[RightEdge + 1] == NOCHESS)
 			{
-				if (AnalyLine[RightEdge + 2] == ChessType)
+				if (AnalyLine[RightEdge + 2] == AnalyLine[RightEdge])
 				{
-					if (AnalyLine[RightEdge + 3] == ChessType)
+					if (AnalyLine[RightEdge + 3] == AnalyLine[RightEdge])//oo_oo
 					{
 						LineRecord[RightEdge + 3] = ANALYSIED;
 						LineRecord[RightEdge + 2] = ANALYSIED;
@@ -654,17 +659,24 @@ int Eveluation::AnalysisLine(int position[], int Length, int pos)
 					}
 					else
 					{
-						if (AnalyLine[RightEdge + 3] == NOCHESS)
+						//oo_o_或oo_ox
+						LineRecord[RightEdge + 2] = ANALYSIED;
+						if (lefttwo)//_oo_o_或_oo_ox
 						{
-							LineRecord[RightEdge + 2] = ANALYSIED;
-							if (lefttwo)
-								LineRecord[RightEdge] = TWO;
-							else
-								LineRecord[RightEdge] = STHREE;
+							LineRecord[RightEdge] = STHREE;
 						}
+						else
+						{
+							//xoo_o_
+							if (AnalyLine[RightEdge + 3] == NOCHESS)
+							{
+								LineRecord[RightEdge] = STHREE;
+							}
+						}
+
 					}
 				}
-				else
+				else//oo_x或oo__
 				{
 					if (LineRecord[LeftEdge] == SFOUR)
 					{
@@ -673,7 +685,6 @@ int Eveluation::AnalysisLine(int position[], int Length, int pos)
 
 					if (LineRecord[LeftEdge] == STHREE)
 					{
-						LineRecord[LeftEdge] = THREE;
 						return LineRecord[LeftEdge];
 					}
 
@@ -689,11 +700,18 @@ int Eveluation::AnalysisLine(int position[], int Length, int pos)
 			}
 			else
 			{
+				//oo_oox
 				if (LineRecord[LeftEdge] == SFOUR)
 				{
 					return LineRecord[LeftEdge];
 				}
 
+				//o_oox
+				if (LineRecord[LeftEdge] == STHREE)
+				{
+					return LineRecord[LeftEdge];
+				}
+				//_oox
 				if (lefttwo)
 				{
 					LineRecord[pos] = STWO;

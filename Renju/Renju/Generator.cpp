@@ -15,8 +15,8 @@ int MoveGenerator::AddMove(int ToX, int ToY, int Layer)
 {
 	MoveList[Layer][MoveCount].ChessPos.x = ToX;
 	MoveList[Layer][MoveCount].ChessPos.y = ToY;
+	MoveList[Layer][MoveCount].Score = PosValue[ToY][ToX];
 	MoveCount++;
-	MoveList[Layer][MoveCount].Score = PosValue[ToX][ToY];
 	return MoveCount;
 }
 
@@ -31,8 +31,6 @@ int MoveGenerator::PossibleMove(int position[BOARD_NUM][BOARD_NUM], int Layer, i
 			if (position[i][j] == NOCHESS)
 				AddMove(j, i, Layer);
 		}
-
-	HistoryHeuristic::QSort(MoveList[Layer], 0, MoveCount - 1);
 	return MoveCount;
 }
 

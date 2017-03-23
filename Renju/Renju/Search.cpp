@@ -1,7 +1,7 @@
 #include"search.h"
 #include<math.h>
 #include<string.h>
-#include"history_heuristic.h"
+#include<stdio.h>
 
 Search::Search()
 {
@@ -10,14 +10,12 @@ Search::Search()
 
 Search::~Search()
 {
-	delete pmg;
-	delete peval;
-}
 
-int Search::MakeMove(ChessMove *move, int type)
+} 
+
+void Search::MakeMove(ChessMove *move, int type)
 {
 	CurPosition[move->ChessPos.y][move->ChessPos.x] = type;
-	return  0;
 }
 
 void Search::UnMakeMove(ChessMove *move)
@@ -25,11 +23,10 @@ void Search::UnMakeMove(ChessMove *move)
 	CurPosition[move->ChessPos.y][move->ChessPos.x] = NOCHESS;
 }
 
-int Search::IsGameOver(int position[][BOARD_NUM], int depth)
+int Search::IsGameOver(int position[][BOARD_NUM], int side)
 {
-	int i, score;
-	i = (MaxDepth - depth) % 2;
-	score = peval->evelutaion(position, i);
+	int  score;
+	score =  peval->evelutaion(position,side);
 
 	if (abs(score) > 8000)
 	{
@@ -51,20 +48,75 @@ void Search::SetMoveGenerator(MoveGenerator *mg)
 	this->pmg = mg;
 }
 
-void Search::SearchGoodMove(int position[][BOARD_NUM], int type)
+//设置历史启发器
+void Search::SetHistoryHeuristic(HistoryHeuristic *phh)
 {
-	int Score;
-	memcpy(CurPosition, position, BOARD_NUM*BOARD_NUM);
-	CurrentDepth = MaxDepth;
-	Score = AlphaBeta(CurrentDepth, -20000, 20000);
+	this->hh = phh;
+}
 
-	if (CurPosition[BestMove.ChessPos.y][BestMove.ChessPos.x] != NOCHESS)
-	{
-	}
+//设置评估函数
+void Search::SetEveluation(Eveluation *evel)
+{
+	this->peval = evel;
+}
+
+//为当前棋局产生一种好的走法
+int Search::SearchGoodMove(int position[][BOARD_NUM], int type)
+{
+	int Score,over;	
+	memcpy(CurPosition, position, sizeof(int)*BOARD_COUNT);//保存当前棋盘
+	CurrentDepth = MaxDepth;
+	Score = AlphaBeta(CurrentDepth, -20000, 20000);//返回当前局数的得分
+	MakeMove(&BestMove,type);
+	memcpy(position, CurPosition, sizeof(int)*BOARD_COUNT);//复制当前所走棋盘 
+
+	if (fabs(Score) > 8000)
+		return Score;
+	else
+		return 0;//下完当前步骤
 }
 
 int Search::AlphaBeta(int depth, int alpha, int beta)
 {
-	return 0;
-}
+	int score, over, Count, side;
+	int best=-1;
+	
+	side = ((MaxDepth - depth) % 2);//判断当前输入哪一方
+	over = IsGameOver(CurPosition, side);
 
+	if (fabs(over)>=8000)
+	{
+		return over;
+	}
+	
+	if (depth == 0)//返回叶子节点估值
+	{
+		return peval->evelutaion(CurPosition, !side);
+	}
+	
+	Count = pmg->PossibleMove(CurPosition, depth, side);
+	//排序
+	HistoryHeuristic::QSort(pmg->MoveList[depth], 0, Count);
+	
+
+	for (int i = 0; i < Count; i++)
+	{
+		MakeMove(&pmg->MoveList[depth][i], side);
+		score = -AlphaBeta(depth - 1, -beta, -alpha);
+		UnMakeMove(&pmg->MoveList[depth][i]);//撤销之前的走法
+
+		if (score > alpha)//alpha剪枝
+		{
+			alpha = score;
+			if (depth == MaxDepth)//保存当前最佳路径
+			{
+				BestMove = pmg->MoveList[depth][i];
+			}
+			best = i;//保存当前最大节点
+		}
+
+		if (alpha > beta)//beta剪枝
+			break;
+	}
+	return alpha;
+}

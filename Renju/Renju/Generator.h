@@ -2,6 +2,7 @@
 #ifndef GENERATOR_H
 #define GENERATOR_H
 #include"define.h"
+
 class MoveGenerator {
 public:
 	MoveGenerator();
@@ -10,7 +11,7 @@ public:
 	//保存走法的数组
 	ChessMove MoveList[10][225];
 protected:
-	int AddMove(int FromX, int ToX, int Layer);
+	int AddMove(int ToX, int ToY, int Layer);
 	int MoveCount;//记录每一层所能走的步数
 };
 #endif

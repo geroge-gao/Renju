@@ -2,6 +2,7 @@
 #ifndef define_h
 #define define_h
 
+//定义的各种变量
 #define BOARD_NUM 15
 #define BOARD_COUNT 225
 #define BLACK 1

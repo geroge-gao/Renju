@@ -5,6 +5,7 @@
 #include"define.h"
 #include<string.h>
 
+//历史启发工具类
 
 class HistoryHeuristic {
 public:
@@ -24,8 +25,6 @@ protected:
 
 	//历史得分表
 	int History_Table[BOARD_NUM][BOARD_NUM];
-	//排序用的缓冲队列 
-	static ChessMove Buffer[225];
 
 };
 #endif

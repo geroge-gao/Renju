@@ -4,7 +4,6 @@
 #include"define.h"
 #include"Generator.h"
 #include"eveluation.h"
-
 #include"history_heuristic.h"
 
 class Search {
@@ -12,19 +11,26 @@ public:
 	Search();
 	~Search();
 	//为当前局走出下一步
-	void SearchGoodMove(int position[][BOARD_NUM], int type);
+	int SearchGoodMove(int position[][BOARD_NUM], int type);
 	//设置最大搜索深度
 	void SetSearchDepth(int depth);
-	void SetMoveGenerator(MoveGenerator *mg);
-protected:
-	//根据某一走法产生之后的棋局
-	int MakeMove(ChessMove *move, int type);
-	//恢复之前的棋盘
-	void UnMakeMove(ChessMove *move);
 	//判断游戏是否终结
 	int IsGameOver(int position[][BOARD_NUM], int depth);
+	//设置产生器
+	void SetMoveGenerator(MoveGenerator *mg);
+	//设置历史启发器
+	void SetHistoryHeuristic(HistoryHeuristic *phh);
+	//设置评估函数
+	void SetEveluation(Eveluation *evel);
+protected:
+	//根据某一走法产生之后的棋局
+	void MakeMove(ChessMove *move, int type);
+	//恢复之前的棋盘
+	void UnMakeMove(ChessMove *move);
+	
 	//搜索当前最佳路径
 	int AlphaBeta(int depth, int alpha, int beta);
+
 	//保存当前的棋盘状态
 	int CurPosition[BOARD_NUM][BOARD_NUM];
 	//记录最佳走法的变量
@@ -33,6 +39,8 @@ protected:
 	MoveGenerator *pmg;
 	//估值核心指针
 	Eveluation *peval;
+	//历史启发表指针 
+	HistoryHeuristic *hh;
 	//最大搜索深度 
 	int MaxDepth;
 	//当前搜索深度

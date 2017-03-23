@@ -3,7 +3,7 @@
 
 HistoryHeuristic::HistoryHeuristic()
 {
-
+	ResetHistoryTable();
 }
 
 HistoryHeuristic::~HistoryHeuristic()
@@ -13,7 +13,13 @@ HistoryHeuristic::~HistoryHeuristic()
 
 void HistoryHeuristic::ResetHistoryTable()
 {
-	memset(History_Table, 10, BOARD_NUM*sizeof(int));
+	//memset(History_Table, 10,sizeof(History_Table));
+	memset(History_Table, 10, sizeof(History_Table));
+	//for (int i = 0; i < BOARD_NUM; i++)
+	//	for (int j = 0; j < BOARD_NUM; j++)
+	//	{
+	//		this->History_Table[i][j] = 10;
+	//	}
 }
 
 //去给定走法的历史得分
@@ -34,7 +40,7 @@ void HistoryHeuristic::QSort(ChessMove *source, int low, int high)
 	{
 		i = Partition(source, low, high);
 		QSort(source, low, i - 1);
-		QSort(source, i, high);
+		QSort(source, i+1, high);
 	}
 }
 
@@ -42,12 +48,13 @@ int HistoryHeuristic::Partition(ChessMove *source, int low, int high)
 {
 	ChessMove temp;
 	temp = source[low];
+	int score = temp.Score;
 	while (low < high)
 	{
-		while (source[high].Score <= temp.Score&&low < high)
+		while (source[high].Score <= score&&low < high)
 			high--;
 		source[low] = source[high];
-		while (source[low].Score > temp.Score&&low < high)
+		while (source[low].Score > score&&low < high)
 			low++;
 		source[high] = source[low];
 	}
