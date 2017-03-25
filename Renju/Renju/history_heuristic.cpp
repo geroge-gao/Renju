@@ -13,24 +13,18 @@ HistoryHeuristic::~HistoryHeuristic()
 
 void HistoryHeuristic::ResetHistoryTable()
 {
-	//memset(History_Table, 10,sizeof(History_Table));
-	memset(History_Table, 10, sizeof(History_Table));
-	//for (int i = 0; i < BOARD_NUM; i++)
-	//	for (int j = 0; j < BOARD_NUM; j++)
-	//	{
-	//		this->History_Table[i][j] = 10;
-	//	}
+	memset(History_Table, 10, BOARD_COUNT * sizeof(int));//初始化历史表
 }
 
-//去给定走法的历史得分
-int HistoryHeuristic::GetHistoryScore(ChessMove *move)
+
+int HistoryHeuristic::GetHistoryScore(ChessMove move)
 {
-	return History_Table[move->ChessPos.y][move->ChessPos.x];
+	return History_Table[move.ChessPos.y][move.ChessPos.x];//获取给定步骤历史表得分
 }
 
-void HistoryHeuristic::EnterHistoryScore(ChessMove *move, int depth)
+void HistoryHeuristic::EnterHistoryScore(ChessMove move, int depth)
 {
-	History_Table[move->ChessPos.y][move->ChessPos.x] += 2 << depth;
+	History_Table[move.ChessPos.y][move.ChessPos.x] += 2 << depth;
 }
 
 void HistoryHeuristic::QSort(ChessMove *source, int low, int high)

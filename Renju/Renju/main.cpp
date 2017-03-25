@@ -62,7 +62,7 @@ void Print(char a[][BOARD_NUM])
 int main()
 {
 	int a, b;//人类选手要下的位置
-	int depth=2;//当前搜索深度为三层
+	int depth=1;//当前搜索深度为三层
 	Search s;//创建搜索引擎
 	HistoryHeuristic hh;
 	Eveluation evel;
@@ -87,10 +87,10 @@ int main()
 		Print(pos);
 	}
 
-	if (t > 0)
+	if (t < 0)
 		printf("电脑胜!\n");
 	else
 		printf("恭喜你，胜利!\n");
-
+	system("pause");
 	return 0;
 }

@@ -122,13 +122,18 @@
     <ClInclude Include="eveluation.h" />
     <ClInclude Include="Generator.h" />
     <ClInclude Include="history_heuristic.h" />
+    <ClInclude Include="resource.h" />
     <ClInclude Include="search.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="eveluation.cpp" />
     <ClCompile Include="Generator.cpp" />
     <ClCompile Include="history_heuristic.cpp" />
+    <ClCompile Include="main.cpp" />
     <ClCompile Include="Search.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="Renju.rc" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

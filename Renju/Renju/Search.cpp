@@ -69,36 +69,33 @@ int Search::SearchGoodMove(int position[][BOARD_NUM], int type)
 	Score = AlphaBeta(CurrentDepth, -20000, 20000);//返回当前局数的得分
 	MakeMove(&BestMove,type);
 	memcpy(position, CurPosition, sizeof(int)*BOARD_COUNT);//复制当前所走棋盘 
-
-	if (fabs(Score) > 8000)
-		return Score;
-	else
-		return 0;//下完当前步骤
+	over = IsGameOver(CurPosition, !type);
+	if (fabs(over) > 9000)
+		return over;
+	return 0;
 }
 
 int Search::AlphaBeta(int depth, int alpha, int beta)
 {
-	int score, over, Count, side;
-	int best=-1;
-	
+	int score, over, Count, side;	
 	side = ((MaxDepth - depth) % 2);//判断当前输入哪一方
-	over = IsGameOver(CurPosition, side);
 
-	if (fabs(over)>=8000)
-	{
-		return over;
-	}
-	
 	if (depth == 0)//返回叶子节点估值
 	{
 		return peval->evelutaion(CurPosition, !side);
 	}
+	else if (depth != 0)
+	{
+		over = IsGameOver(CurPosition, side);
+		if (fabs(over) > 9000)
+			return over;
+	}
+	
 	
 	Count = pmg->PossibleMove(CurPosition, depth, side);
-	//排序
-	HistoryHeuristic::QSort(pmg->MoveList[depth], 0, Count);
-	
 
+	HistoryHeuristic::QSort(pmg->MoveList[depth], 0, Count);
+	int best = -1;
 	for (int i = 0; i < Count; i++)
 	{
 		MakeMove(&pmg->MoveList[depth][i], side);
@@ -118,5 +115,6 @@ int Search::AlphaBeta(int depth, int alpha, int beta)
 		if (alpha > beta)//beta剪枝
 			break;
 	}
-	return alpha;
+		return alpha;
+	
 }

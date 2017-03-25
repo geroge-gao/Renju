@@ -115,23 +115,23 @@ int Eveluation::evelutaion(int position[][BOARD_NUM], int isWhite)
 	{
 		if (TypeCount[WHITE][FIVE])
 		{
-			return -9999;
+			return -20000;
 		}
 
 		if (TypeCount[BLACK][FIVE])
 		{
-			return 9999;
+			return 20000;
 		}
 	}
 	else//黑子
 	{
 		if (TypeCount[BLACK][FIVE])
 		{
-			return -9999;
+			return -20000;
 		}
 		if (TypeCount[WHITE][FIVE])
 		{
-			return 9999;
+			return 20000;
 		}
 	}
 
@@ -155,145 +155,277 @@ int Eveluation::evelutaion(int position[][BOARD_NUM], int isWhite)
 	if (TypeCount[BLACK][SFOUR] > 1)
 		TypeCount[BLACK][FOUR]++;
 
-	if (isWhite==WHITE)
+	//if (isWhite==WHITE)
+	//{
+
+	//	if (TypeCount[WHITE][FOUR])//白胜
+	//	{
+	//		white_value+=7000;
+	//	}
+
+	//	if (TypeCount[WHITE][SFOUR])//白胜
+	//	{
+	//		white_value += 7000;
+	//	}
+
+	//	if (TypeCount[BLACK][FOUR])//黑胜
+	//	{
+	//		black_value += 7000;
+	//	}
+
+	//	if (TypeCount[BLACK][SFOUR] == 1)
+	//	{
+	//		black_value += 5000;
+	//	}
+
+	//	if (TypeCount[BLACK][SFOUR] && TypeCount[BLACK][THREE])//黑胜
+	//	{
+	//		black_value += 7000;
+	//	}
+
+	//	if (TypeCount[WHITE][THREE] && TypeCount[BLACK][SFOUR] == 0)//白胜//此处需要修改
+	//	{
+	//		white_value += 4000;
+	//	}
+
+	//	if (TypeCount[BLACK][THREE] > 1 &&TypeCount[WHITE][SFOUR] == 0 &&TypeCount[WHITE][THREE] == 0 &&TypeCount[WHITE][STHREE] == 0)
+	//	{
+	//		black_value += 7000;
+	//	}		
+
+	//	if (TypeCount[WHITE][THREE] > 1)
+	//		white_value+= 2000;
+	//	else if (TypeCount[WHITE][THREE])			
+	//			white_value += 200;
+
+	//	if (TypeCount[BLACK][THREE] > 1)
+	//		black_value += 500;
+	//	else {
+	//		if (TypeCount[BLACK][THREE])
+	//			black_value += 100;
+	//	}
+
+
+	//	if (TypeCount[WHITE][STHREE])
+	//		white_value += TypeCount[WHITE][STHREE] * 10;
+
+	//	if (TypeCount[BLACK][STHREE])
+	//		black_value += TypeCount[BLACK][STHREE] * 10;
+
+	//	if (TypeCount[WHITE][TWO])
+	//		white_value += TypeCount[WHITE][TWO] * 4;
+
+	//	if (TypeCount[BLACK][TWO])
+	//		black_value += TypeCount[BLACK][TWO] *4;
+
+	//	if (TypeCount[WHITE][STWO])
+	//		white_value += TypeCount[WHITE][STWO];
+
+	//	if (TypeCount[BLACK][STWO])
+	//		black_value += TypeCount[BLACK][STWO];
+
+
+	//}
+	//else//轮到黑子
+	//{
+	//	if (TypeCount[BLACK][FOUR])
+	//	{
+	//		black_value += 7000;
+	//	}
+
+	//	if (TypeCount[BLACK][SFOUR])
+	//	{
+	//		black_value += 7000;
+	//	}
+
+	//	if (TypeCount[WHITE][FOUR])
+	//	{
+	//		white_value += 7000;
+	//	}
+
+	//	if (TypeCount[WHITE][SFOUR])
+	//	{
+	//		white_value += 4000;
+	//	}
+
+	//	if (TypeCount[WHITE][SFOUR] && TypeCount[WHITE][THREE])
+	//	{
+	//		white_value += 7000;
+	//	}
+
+	//	if (TypeCount[BLACK][THREE] && TypeCount[WHITE][SFOUR] == 0)
+	//	{
+	//		black_value += 7000;
+	//	}
+
+	//	if (TypeCount[WHITE][THREE] > 1 &&TypeCount[BLACK][SFOUR] == 0 &&TypeCount[BLACK][THREE] == 0 &&TypeCount[BLACK][STHREE] == 0)
+	//	{
+	//		black_value += 7000;
+	//	}
+
+	//	if (TypeCount[BLACK][THREE] > 1)
+	//		black_value += 2000;
+	//	else {
+	//		if (TypeCount[BLACK][THREE])
+	//			black_value += 200;
+	//	}
+
+	//	if (TypeCount[WHITE][THREE] > 1)
+	//		white_value += 500;
+	//	else {
+	//		if (TypeCount[WHITE][THREE])
+	//			white_value += 100;
+	//	}
+	//	if (TypeCount[WHITE][STHREE])
+	//		white_value += TypeCount[WHITE][STHREE] * 10;
+
+	//	if (TypeCount[BLACK][STHREE])
+	//		black_value += TypeCount[BLACK][STHREE] * 10;
+
+	//	if (TypeCount[WHITE][TWO])
+	//		white_value += TypeCount[WHITE][TWO] * 4;
+
+	//	if (TypeCount[BLACK][STWO])
+	//		black_value += TypeCount[BLACK][TWO] * 4;
+
+	//	if (TypeCount[WHITE][STWO])
+	//		white_value+= TypeCount[WHITE][STWO];
+
+	//	if (TypeCount[BLACK][STWO])
+	//		black_value += TypeCount[BLACK][STWO];
+
+	//}
+
+	if (isWhite == WHITE)
 	{
-
-		if (TypeCount[WHITE][FOUR])//白胜
+		//白子四连
+		if (TypeCount[WHITE][FOUR])
 		{
-			white_value+=7000;
+			white_value += 8000;
 		}
 
-		if (TypeCount[WHITE][SFOUR])//白胜
+		if (TypeCount[WHITE][SFOUR])
 		{
-			white_value += 7000;
+			white_value += 8000;
 		}
-
-		if (TypeCount[BLACK][FOUR])//黑胜
-		{
-			black_value += 7000;
-		}
-
-
-		if (TypeCount[BLACK][SFOUR] && TypeCount[BLACK][THREE])//黑胜
-		{
-			black_value += 6000;
-		}
-
-		if (TypeCount[WHITE][THREE] && TypeCount[BLACK][SFOUR] == 0)
-		{
-			white_value += 6000;
-		}
-
-		if (TypeCount[BLACK][THREE] > 1 &&
-			TypeCount[WHITE][SFOUR] == 0 &&
-			TypeCount[WHITE][THREE] == 0 &&
-			TypeCount[WHITE][STHREE] == 0)
-		{
-			black_value += 6000;
-		}
-
-
-		if (TypeCount[WHITE][THREE] > 1)
-			white_value+= 2000;
-		else {
-			if (TypeCount[WHITE][THREE])
-				white_value += 200;
-		}
-
-		if (TypeCount[BLACK][THREE] > 1)
-			black_value += 500;
-		else {
-			if (TypeCount[BLACK][THREE])
-				black_value += 100;
-		}
-
-
-		if (TypeCount[WHITE][STHREE])
-			white_value += TypeCount[WHITE][STHREE] * 20;
-
-		if (TypeCount[BLACK][STHREE])
-			black_value += TypeCount[BLACK][STHREE] * 20;
-
-		if (TypeCount[WHITE][TWO])
-			white_value += TypeCount[WHITE][TWO] * 5;
-
-		if (TypeCount[BLACK][TWO])
-			black_value += TypeCount[BLACK][TWO] * 5;
-
-		if (TypeCount[WHITE][STWO])
-			white_value += TypeCount[WHITE][STWO]*2;
-
-		if (TypeCount[BLACK][STWO])
-			black_value += TypeCount[BLACK][STWO]*2;
-
-
-	}
-	else//轮到黑子
-	{
+		//黑子四连
 		if (TypeCount[BLACK][FOUR])
 		{
-			black_value += 7000;
+			black_value += 8000;
 		}
 
 		if (TypeCount[BLACK][SFOUR])
 		{
-			black_value += 7000;
+			black_value += 5000;
 		}
-
-		if (TypeCount[WHITE][FOUR])
+		//活三
+		if (TypeCount[WHITE][THREE])
 		{
-			white_value += 7000;
+			white_value += TypeCount[WHITE][THREE] * 500;
 		}
 
-		if (TypeCount[WHITE][SFOUR] && TypeCount[WHITE][THREE])
+		if (TypeCount[BLACK][THREE])
 		{
-			white_value += 6000;
+			black_value += TypeCount[BLACK][THREE] * 50;
 		}
 
-		if (TypeCount[BLACK][THREE] && TypeCount[WHITE][SFOUR] == 0)
-		{
-			black_value += 6000;
-		}
-
-		if (TypeCount[WHITE][THREE] > 1 &&TypeCount[BLACK][SFOUR] == 0 &&TypeCount[BLACK][THREE] == 0 &&TypeCount[BLACK][STHREE] == 0)
-		{
-			black_value += 6000;
-		}
-
-		if (TypeCount[BLACK][THREE] > 1)
-			black_value += 2000;
-		else {
-			if (TypeCount[BLACK][THREE])
-				black_value += 200;
-		}
-
-		if (TypeCount[WHITE][THREE] > 1)
-			white_value += 500;
-		else {
-			if (TypeCount[WHITE][THREE])
-				white_value += 100;
-		}
-
-
-
+		//眠三
 		if (TypeCount[WHITE][STHREE])
-			white_value += TypeCount[WHITE][STHREE] * 20;
+		{
+			white_value += TypeCount[BLACK][STHREE] * 100;
+		}
 
 		if (TypeCount[BLACK][STHREE])
-			black_value += TypeCount[BLACK][STHREE] * 20;
+		{
+			black_value += TypeCount[BLACK][STHREE] * 10;
+		}
+		//活儿
+		if (TypeCount[WHITE][TWO])
+		{
+			white_value += TypeCount[WHITE][TWO] * 4;
+		}
+
+		if (TypeCount[BLACK][TWO])
+		{
+			black_value += TypeCount[BLACK][TWO] * 4;
+		}
+
+		//眠二
+		if (TypeCount[WHITE][STWO])
+		{
+			white_value += TypeCount[WHITE][STWO] * 2;
+		}
+
+		if (TypeCount[BLACK][STWO])
+		{
+			black_value += TypeCount[BLACK][STWO] * 2;;
+		}
+	}
+	else
+	{
+
+		//黑子四连
+		if (TypeCount[BLACK][FOUR])
+		{
+			black_value += 8000;
+		}
+
+		if (TypeCount[BLACK][SFOUR])
+		{
+			black_value += 8000;
+		}
+		//白子四连
+		if (TypeCount[WHITE][FOUR])
+		{
+			white_value += 8000;
+		}
+
+		if (TypeCount[WHITE][SFOUR])
+		{
+			white_value += 5000;
+		}
+		//活三
+		if (TypeCount[BLACK][THREE])
+		{
+			black_value += TypeCount[BLACK][THREE] * 500;
+		}
+
+		if (TypeCount[WHITE][THREE])
+		{
+			white_value += TypeCount[WHITE][THREE] * 50;
+		}
+
+		//眠三
+		if (TypeCount[BLACK][STHREE])
+		{
+			black_value += TypeCount[BLACK][STHREE] * 100;
+		}
+
+		if (TypeCount[WHITE][STHREE])
+		{
+			white_value += TypeCount[WHITE][STHREE] * 10;
+		}
+		//活儿
+		if (TypeCount[BLACK][TWO])
+		{
+			black_value += TypeCount[BLACK][TWO] * 4;
+		}
 
 		if (TypeCount[WHITE][TWO])
-			white_value += TypeCount[WHITE][TWO] * 5;
+		{
+			white_value += TypeCount[WHITE][TWO] * 4;
+		}
 
+		//眠二
 		if (TypeCount[BLACK][STWO])
-			black_value += TypeCount[BLACK][TWO] * 5;
+		{
+			black_value += TypeCount[BLACK][STWO] * 2;
+		}
 
 		if (TypeCount[WHITE][STWO])
-			white_value+= TypeCount[WHITE][STWO]*2;
-
-		if (TypeCount[BLACK][STWO])
-			black_value += TypeCount[BLACK][STWO]*2;
-
+		{
+			white_value += TypeCount[WHITE][STWO] * 2;;
+		}
 	}
 
 	for (int i = 0; i < BOARD_NUM; i++)
@@ -357,7 +489,7 @@ int Eveluation::AnalysisVertical(int position[][BOARD_NUM], int i, int j)
 int Eveluation::AnalysisLeft(int position[][BOARD_NUM], int i, int j)
 {
 	int temp[BOARD_NUM];
-	int x, y, k,pos;
+	int x, y, k;
 	if (i < j)//上三角
 	{
 		y = 0;
@@ -366,7 +498,7 @@ int Eveluation::AnalysisLeft(int position[][BOARD_NUM], int i, int j)
 	else//下三角
 	{
 		y = i - j;
-		x = 0;
+  		x = 0;
 	}
 
 	for (k = 0; k < BOARD_NUM; k++)
@@ -392,7 +524,7 @@ int Eveluation::AnalysisLeft(int position[][BOARD_NUM], int i, int j)
 int Eveluation::AnalysisRight(int position[][BOARD_NUM], int i, int j)
 {
 	int temp[BOARD_NUM];
-	int x, y, k,pos;
+	int x, y, k;
 	if (i + j >14)
 	{
 		y = 14;
