@@ -316,28 +316,28 @@ int Eveluation::evelutaion(int position[][BOARD_NUM], int isWhite)
 
 		if (TypeCount[BLACK][SFOUR])
 		{
-			black_value += 5000;
+			black_value += 1200;
 		}
 		//活三
 		if (TypeCount[WHITE][THREE])
 		{
-			white_value += TypeCount[WHITE][THREE] * 500;
+			white_value += TypeCount[WHITE][THREE] * 1000;
 		}
 
 		if (TypeCount[BLACK][THREE])
 		{
-			black_value += TypeCount[BLACK][THREE] * 50;
+			black_value += TypeCount[BLACK][THREE] * 100;
 		}
 
 		//眠三
 		if (TypeCount[WHITE][STHREE])
 		{
-			white_value += TypeCount[BLACK][STHREE] * 100;
+			white_value += TypeCount[BLACK][STHREE] * 200;
 		}
 
 		if (TypeCount[BLACK][STHREE])
 		{
-			black_value += TypeCount[BLACK][STHREE] * 10;
+			black_value += TypeCount[BLACK][STHREE] * 20;
 		}
 		//活儿
 		if (TypeCount[WHITE][TWO])
@@ -382,28 +382,28 @@ int Eveluation::evelutaion(int position[][BOARD_NUM], int isWhite)
 
 		if (TypeCount[WHITE][SFOUR])
 		{
-			white_value += 5000;
+			white_value += 1200;
 		}
 		//活三
 		if (TypeCount[BLACK][THREE])
 		{
-			black_value += TypeCount[BLACK][THREE] * 500;
+			black_value += TypeCount[BLACK][THREE] * 1000;
 		}
 
 		if (TypeCount[WHITE][THREE])
 		{
-			white_value += TypeCount[WHITE][THREE] * 50;
+			white_value += TypeCount[WHITE][THREE] * 100;
 		}
 
 		//眠三
 		if (TypeCount[BLACK][STHREE])
 		{
-			black_value += TypeCount[BLACK][STHREE] * 100;
+			black_value += TypeCount[BLACK][STHREE] * 200;
 		}
 
 		if (TypeCount[WHITE][STHREE])
 		{
-			white_value += TypeCount[WHITE][STHREE] * 10;
+			white_value += TypeCount[WHITE][STHREE] * 20;
 		}
 		//活儿
 		if (TypeCount[BLACK][TWO])
