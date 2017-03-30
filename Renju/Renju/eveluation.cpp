@@ -38,7 +38,6 @@ Eveluation::~Eveluation()
 int Eveluation::evelutaion(int position[][BOARD_NUM], int isWhite)
 {
 	int ChessType;
-	count++;//计数器+1
 
 	memset(TypeRecord, UNANALYSISED, sizeof(TypeRecord));//对数组初始化赋值
 	memset(TypeCount, 0, sizeof(TypeCount));
@@ -306,7 +305,7 @@ int Eveluation::evelutaion(int position[][BOARD_NUM], int isWhite)
 
 		if (TypeCount[WHITE][SFOUR])
 		{
-			white_value += 8000;
+			white_value += 3000;
 		}
 		//黑子四连
 		if (TypeCount[BLACK][FOUR])
@@ -316,7 +315,7 @@ int Eveluation::evelutaion(int position[][BOARD_NUM], int isWhite)
 
 		if (TypeCount[BLACK][SFOUR])
 		{
-			black_value += 1200;
+			black_value += 4000;
 		}
 		//活三
 		if (TypeCount[WHITE][THREE])
@@ -326,13 +325,13 @@ int Eveluation::evelutaion(int position[][BOARD_NUM], int isWhite)
 
 		if (TypeCount[BLACK][THREE])
 		{
-			black_value += TypeCount[BLACK][THREE] * 100;
+			black_value += TypeCount[BLACK][THREE] * 200;
 		}
 
 		//眠三
 		if (TypeCount[WHITE][STHREE])
 		{
-			white_value += TypeCount[BLACK][STHREE] * 200;
+			white_value += TypeCount[BLACK][STHREE] * 100;
 		}
 
 		if (TypeCount[BLACK][STHREE])
@@ -372,7 +371,7 @@ int Eveluation::evelutaion(int position[][BOARD_NUM], int isWhite)
 
 		if (TypeCount[BLACK][SFOUR])
 		{
-			black_value += 8000;
+			black_value += 3000;
 		}
 		//白子四连
 		if (TypeCount[WHITE][FOUR])
@@ -382,7 +381,7 @@ int Eveluation::evelutaion(int position[][BOARD_NUM], int isWhite)
 
 		if (TypeCount[WHITE][SFOUR])
 		{
-			white_value += 1200;
+			white_value += 4000;
 		}
 		//活三
 		if (TypeCount[BLACK][THREE])
@@ -392,13 +391,13 @@ int Eveluation::evelutaion(int position[][BOARD_NUM], int isWhite)
 
 		if (TypeCount[WHITE][THREE])
 		{
-			white_value += TypeCount[WHITE][THREE] * 100;
+			white_value += TypeCount[WHITE][THREE] * 200;
 		}
 
 		//眠三
 		if (TypeCount[BLACK][STHREE])
 		{
-			black_value += TypeCount[BLACK][STHREE] * 200;
+			black_value += TypeCount[BLACK][STHREE] * 100;
 		}
 
 		if (TypeCount[WHITE][STHREE])

@@ -87,7 +87,7 @@ int main()
 		Print(pos);
 	}
 
-	if (t < 0)
+	if (t >0)
 		printf("µçÄÔÊ¤!\n");
 	else
 		printf("¹§Ï²Äã£¬Ê¤Àû!\n");
