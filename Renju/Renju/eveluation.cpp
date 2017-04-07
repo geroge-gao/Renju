@@ -58,7 +58,7 @@ int Eveluation::evelutaion(int position[][BOARD_NUM], int isWhite)
 					AnalysisVertical(position, i, j);
 				}
 
-				if (TypeRecord[i][j][2] == UNANALYSISED)
+ 				if (TypeRecord[i][j][2] == UNANALYSISED)
 				{
 					AnalysisLeft(position, i, j);
 				}
@@ -66,16 +66,17 @@ int Eveluation::evelutaion(int position[][BOARD_NUM], int isWhite)
 				if (TypeRecord[i][j][3] == UNANALYSISED)
 				{
 					AnalysisRight(position, i, j);
-
 				}
 			}
 		}
 	//对结果进行分析
 	for (int i = 0; i < BOARD_NUM; i++)
 		for (int j = 0; j < BOARD_NUM; j++)
+		{
+			ChessType = position[i][j];
 			for (int k = 0; k < 4; k++)
 			{
-				ChessType = position[i][j];
+
 				if (ChessType != NOCHESS)
 				{
 					switch (TypeRecord[i][j][k])
@@ -106,11 +107,13 @@ int Eveluation::evelutaion(int position[][BOARD_NUM], int isWhite)
 					}
 				}
 			}
+		}
+			
 
 	/*
 	由于采用负极大极小值，所以现在开始自己赢了应该返回负值
 	*/
-	if (isWhite)
+	if (isWhite==WHITE)
 	{
 		if (TypeCount[WHITE][FIVE])
 		{
@@ -145,208 +148,73 @@ int Eveluation::evelutaion(int position[][BOARD_NUM], int isWhite)
 		TypeCount[BLACK][FOUR]++;
 	}
 
-	int white_value = 0;
-	int black_value = 0;
-
 	if (TypeCount[WHITE][SFOUR] > 1)
 		TypeCount[WHITE][FOUR]++;
 
 	if (TypeCount[BLACK][SFOUR] > 1)
 		TypeCount[BLACK][FOUR]++;
 
-	//if (isWhite==WHITE)
-	//{
-
-	//	if (TypeCount[WHITE][FOUR])//白胜
-	//	{
-	//		white_value+=7000;
-	//	}
-
-	//	if (TypeCount[WHITE][SFOUR])//白胜
-	//	{
-	//		white_value += 7000;
-	//	}
-
-	//	if (TypeCount[BLACK][FOUR])//黑胜
-	//	{
-	//		black_value += 7000;
-	//	}
-
-	//	if (TypeCount[BLACK][SFOUR] == 1)
-	//	{
-	//		black_value += 5000;
-	//	}
-
-	//	if (TypeCount[BLACK][SFOUR] && TypeCount[BLACK][THREE])//黑胜
-	//	{
-	//		black_value += 7000;
-	//	}
-
-	//	if (TypeCount[WHITE][THREE] && TypeCount[BLACK][SFOUR] == 0)//白胜//此处需要修改
-	//	{
-	//		white_value += 4000;
-	//	}
-
-	//	if (TypeCount[BLACK][THREE] > 1 &&TypeCount[WHITE][SFOUR] == 0 &&TypeCount[WHITE][THREE] == 0 &&TypeCount[WHITE][STHREE] == 0)
-	//	{
-	//		black_value += 7000;
-	//	}		
-
-	//	if (TypeCount[WHITE][THREE] > 1)
-	//		white_value+= 2000;
-	//	else if (TypeCount[WHITE][THREE])			
-	//			white_value += 200;
-
-	//	if (TypeCount[BLACK][THREE] > 1)
-	//		black_value += 500;
-	//	else {
-	//		if (TypeCount[BLACK][THREE])
-	//			black_value += 100;
-	//	}
-
-
-	//	if (TypeCount[WHITE][STHREE])
-	//		white_value += TypeCount[WHITE][STHREE] * 10;
-
-	//	if (TypeCount[BLACK][STHREE])
-	//		black_value += TypeCount[BLACK][STHREE] * 10;
-
-	//	if (TypeCount[WHITE][TWO])
-	//		white_value += TypeCount[WHITE][TWO] * 4;
-
-	//	if (TypeCount[BLACK][TWO])
-	//		black_value += TypeCount[BLACK][TWO] *4;
-
-	//	if (TypeCount[WHITE][STWO])
-	//		white_value += TypeCount[WHITE][STWO];
-
-	//	if (TypeCount[BLACK][STWO])
-	//		black_value += TypeCount[BLACK][STWO];
-
-
-	//}
-	//else//轮到黑子
-	//{
-	//	if (TypeCount[BLACK][FOUR])
-	//	{
-	//		black_value += 7000;
-	//	}
-
-	//	if (TypeCount[BLACK][SFOUR])
-	//	{
-	//		black_value += 7000;
-	//	}
-
-	//	if (TypeCount[WHITE][FOUR])
-	//	{
-	//		white_value += 7000;
-	//	}
-
-	//	if (TypeCount[WHITE][SFOUR])
-	//	{
-	//		white_value += 4000;
-	//	}
-
-	//	if (TypeCount[WHITE][SFOUR] && TypeCount[WHITE][THREE])
-	//	{
-	//		white_value += 7000;
-	//	}
-
-	//	if (TypeCount[BLACK][THREE] && TypeCount[WHITE][SFOUR] == 0)
-	//	{
-	//		black_value += 7000;
-	//	}
-
-	//	if (TypeCount[WHITE][THREE] > 1 &&TypeCount[BLACK][SFOUR] == 0 &&TypeCount[BLACK][THREE] == 0 &&TypeCount[BLACK][STHREE] == 0)
-	//	{
-	//		black_value += 7000;
-	//	}
-
-	//	if (TypeCount[BLACK][THREE] > 1)
-	//		black_value += 2000;
-	//	else {
-	//		if (TypeCount[BLACK][THREE])
-	//			black_value += 200;
-	//	}
-
-	//	if (TypeCount[WHITE][THREE] > 1)
-	//		white_value += 500;
-	//	else {
-	//		if (TypeCount[WHITE][THREE])
-	//			white_value += 100;
-	//	}
-	//	if (TypeCount[WHITE][STHREE])
-	//		white_value += TypeCount[WHITE][STHREE] * 10;
-
-	//	if (TypeCount[BLACK][STHREE])
-	//		black_value += TypeCount[BLACK][STHREE] * 10;
-
-	//	if (TypeCount[WHITE][TWO])
-	//		white_value += TypeCount[WHITE][TWO] * 4;
-
-	//	if (TypeCount[BLACK][STWO])
-	//		black_value += TypeCount[BLACK][TWO] * 4;
-
-	//	if (TypeCount[WHITE][STWO])
-	//		white_value+= TypeCount[WHITE][STWO];
-
-	//	if (TypeCount[BLACK][STWO])
-	//		black_value += TypeCount[BLACK][STWO];
-
-	//}
+	int white_value = 0;
+	int black_value = 0;	
+	
 
 	if (isWhite == WHITE)
 	{
+
+		//黑子四连
+		if (TypeCount[BLACK][FOUR])
+		{
+			black_value += 12000;
+		}
+
+		if (TypeCount[BLACK][SFOUR])
+		{
+			black_value += 10000;
+		}
+
 		//白子四连
 		if (TypeCount[WHITE][FOUR])
 		{
-			white_value += 8000;
+			white_value += 5000;
 		}
 
 		if (TypeCount[WHITE][SFOUR])
 		{
 			white_value += 3000;
 		}
-		//黑子四连
-		if (TypeCount[BLACK][FOUR])
-		{
-			black_value += 8000;
-		}
-
-		if (TypeCount[BLACK][SFOUR])
-		{
-			black_value += 4000;
-		}
-		//活三
-		if (TypeCount[WHITE][THREE])
-		{
-			white_value += TypeCount[WHITE][THREE] * 1000;
-		}
 
 		if (TypeCount[BLACK][THREE])
 		{
-			black_value += TypeCount[BLACK][THREE] * 200;
+			black_value += TypeCount[BLACK][THREE] * 500;
+		}
+
+		//活三
+		if (TypeCount[WHITE][THREE])
+		{
+			white_value += TypeCount[WHITE][THREE] * 100;
 		}
 
 		//眠三
-		if (TypeCount[WHITE][STHREE])
-		{
-			white_value += TypeCount[BLACK][STHREE] * 100;
-		}
-
 		if (TypeCount[BLACK][STHREE])
 		{
-			black_value += TypeCount[BLACK][STHREE] * 20;
+			black_value += TypeCount[BLACK][STHREE] * 200;
 		}
-		//活儿
+
+		if (TypeCount[WHITE][STHREE])
+		{
+			white_value += TypeCount[BLACK][STHREE] * 20;
+		}
+
+
+		//活二
 		if (TypeCount[WHITE][TWO])
 		{
-			white_value += TypeCount[WHITE][TWO] * 4;
+			white_value += TypeCount[WHITE][TWO] * 6;
 		}
 
 		if (TypeCount[BLACK][TWO])
 		{
-			black_value += TypeCount[BLACK][TWO] * 4;
+			black_value += TypeCount[BLACK][TWO] * 6;
 		}
 
 		//眠二
@@ -362,57 +230,56 @@ int Eveluation::evelutaion(int position[][BOARD_NUM], int isWhite)
 	}
 	else
 	{
+		//白子四连
+		if (TypeCount[WHITE][FOUR])
+		{
+			white_value += 12000;
+		}
+
+		if (TypeCount[WHITE][SFOUR])
+		{
+			white_value += 10000;
+		}
 
 		//黑子四连
 		if (TypeCount[BLACK][FOUR])
 		{
-			black_value += 8000;
+			black_value += 5000;
 		}
 
 		if (TypeCount[BLACK][SFOUR])
 		{
 			black_value += 3000;
 		}
-		//白子四连
-		if (TypeCount[WHITE][FOUR])
-		{
-			white_value += 8000;
-		}
 
-		if (TypeCount[WHITE][SFOUR])
-		{
-			white_value += 4000;
-		}
 		//活三
-		if (TypeCount[BLACK][THREE])
-		{
-			black_value += TypeCount[BLACK][THREE] * 1000;
-		}
-
 		if (TypeCount[WHITE][THREE])
 		{
-			white_value += TypeCount[WHITE][THREE] * 200;
+			white_value += TypeCount[WHITE][THREE] * 500;
 		}
 
-		//眠三
-		if (TypeCount[BLACK][STHREE])
+		if (TypeCount[BLACK][THREE])
 		{
-			black_value += TypeCount[BLACK][STHREE] * 100;
+			black_value += TypeCount[BLACK][THREE] * 100;
 		}
-
+		//眠三
 		if (TypeCount[WHITE][STHREE])
 		{
-			white_value += TypeCount[WHITE][STHREE] * 20;
+			white_value += TypeCount[WHITE][STHREE] * 200;
 		}
+		if (TypeCount[BLACK][STHREE])
+		{
+			black_value += TypeCount[BLACK][STHREE] * 20;
+		}
+		
 		//活儿
 		if (TypeCount[BLACK][TWO])
 		{
-			black_value += TypeCount[BLACK][TWO] * 4;
+			black_value += TypeCount[BLACK][TWO] * 6;		
 		}
-
 		if (TypeCount[WHITE][TWO])
 		{
-			white_value += TypeCount[WHITE][TWO] * 4;
+			white_value += TypeCount[WHITE][TWO] * 6;
 		}
 
 		//眠二
@@ -420,31 +287,30 @@ int Eveluation::evelutaion(int position[][BOARD_NUM], int isWhite)
 		{
 			black_value += TypeCount[BLACK][STWO] * 2;
 		}
-
 		if (TypeCount[WHITE][STWO])
 		{
 			white_value += TypeCount[WHITE][STWO] * 2;;
 		}
 	}
 
-	for (int i = 0; i < BOARD_NUM; i++)
+	//加上所有棋子的价值位置
+	for(int i=0;i<BOARD_NUM;i++)
 		for (int j = 0; j < BOARD_NUM; j++)
 		{
 			ChessType = position[i][j];
 			if (ChessType != NOCHESS)
 			{
-				if (ChessType == BLACK)//当前的值加上本身属于的值
+				if (ChessType == BLACK)
 					black_value += PosValue[i][j];
 				else
 					white_value += PosValue[i][j];
-
-
 			}
 		}
 
+
 	if (isWhite == WHITE)
 	{
-		return black_value - white_value; 
+		return black_value -white_value;
 	}
 	else
 	{
@@ -456,7 +322,7 @@ int Eveluation::evelutaion(int position[][BOARD_NUM], int isWhite)
 int Eveluation::AnalysisHorizon(int position[][BOARD_NUM], int i, int j)
 {
 	AnalysisLine(position[i], 15, j);
-	for (int s = 0; s < 15; s++)
+	for (int s = 0; s < BOARD_NUM; s++)
 	{
 		if (LineRecord[s] != UNANALYSISED)
 		{
@@ -478,7 +344,8 @@ int Eveluation::AnalysisVertical(int position[][BOARD_NUM], int i, int j)
 
 	for (int s = 0; s < BOARD_NUM; s++)
 	{
-		TypeRecord[s][j][1] = LineRecord[s];
+		if(LineRecord[s]!=UNANALYSISED)
+			TypeRecord[s][j][1] = LineRecord[s];
 	}
 	return TypeRecord[i][j][1];
 }
@@ -582,15 +449,13 @@ int Eveluation::AnalysisLine(int position[], int Length, int pos)
 	{
 		if (AnalyLine[LeftEdge - 1] != ChessType)
 			break;
-
 		LeftEdge--;
 	}
 
-	while (RightEdge < Length)
+	while (RightEdge < Length) 
 	{
 		if (AnalyLine[RightEdge + 1] != ChessType)
 			break;
-
 		RightEdge++;
 	}
 
@@ -623,8 +488,7 @@ int Eveluation::AnalysisLine(int position[], int Length, int pos)
 
 	for (int k = LeftEdge; k <= RightEdge; k++)
 	{
-		//分析连续区域
-		LineRecord[k] = ANALYSIED;
+		LineRecord[k] = ANALYSIED;		//分析连续区域
 	}
 
 	if (RightEdge - LeftEdge == 4)

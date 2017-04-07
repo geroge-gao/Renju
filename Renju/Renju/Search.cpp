@@ -28,7 +28,7 @@ int Search::IsGameOver(int position[][BOARD_NUM], int side)
 	int  score;
 	score =  peval->evelutaion(position,side);
 
-	if (abs(score) > 9000)
+	if (abs(score) > 15000)
 	{
 		return score;//结束，返回极值
 	}
@@ -64,37 +64,29 @@ void Search::SetEveluation(Eveluation *evel)
 int Search::SearchGoodMove(int position[][BOARD_NUM], int type)
 {
 	int Score,over;
-
-	over = peval->evelutaion(position, !type);//判断当前棋局是否已经结束
-	if (fabs(over) > 9000)
+	over = -peval->evelutaion(position, type);//判断当前棋局是否已经结束
+	if (fabs(over) > 15000)
 	{
 		return over;
 	}	
 	memcpy(CurPosition, position, sizeof(int)*BOARD_COUNT);//保存当前棋盘
 	CurrentDepth = MaxDepth;
-	Score = AlphaBeta(CurrentDepth, -20000, 20000);//返回当前局数的得分
+	Score = AlphaBeta(CurrentDepth, -50000, 50000);//返回当前局数的得分
 	MakeMove(&BestMove,type);
 	memcpy(position, CurPosition, sizeof(int)*BOARD_COUNT);//复制当前所走棋盘 
-	over = IsGameOver(CurPosition, type);
-	if (fabs(Score) > 9000)
+	if (fabs(Score) > 15000)
 		return Score;
 	return 0;
 }
 
 int Search::AlphaBeta(int depth, int alpha, int beta)
 {
-	int score, over, Count, side;	
+	int score, over, Count, side;
 	side = ((MaxDepth - depth) % 2);//判断当前输入哪一方
 
 	if (depth == 0)//返回叶子节点估值
 	{
-		return peval->evelutaion(CurPosition, !side);
-	}
-	else if (depth != 0)
-	{
-		over = IsGameOver(CurPosition, side);
-		if (fabs(over) > 9000)
-			return over;
+		return peval->evelutaion(CurPosition,!side);
 	}
 
 	Count = pmg->PossibleMove(CurPosition, depth, side);

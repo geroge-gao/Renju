@@ -56,13 +56,13 @@ void Print(char a[][BOARD_NUM])
 			printf("  %c", a[i][j]);
 		} 
 		printf("\n");
-	}
+	}    
 }
 
 int main()
 {
 	int a, b;//人类选手要下的位置
-	int depth=2;//当前搜索深度为三层
+ 	int depth=2;//当前搜索深度为三层
 	Search s;//创建搜索引擎
 	HistoryHeuristic hh;
 	Eveluation evel;
@@ -80,7 +80,7 @@ int main()
 	{
 		cout << "please input:";
 		cin >> a >> b;
-		curpos[a - 1][b - 1] = BLACK;//自己先手黑子，电脑默认为白子
+ 		curpos[a - 1][b - 1] = BLACK;//自己先手黑子，电脑默认为白子
 		t=s.SearchGoodMove(curpos, WHITE);
 		system("CLS");
 		Transfer();
