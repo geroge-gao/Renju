@@ -115,26 +115,28 @@ int Eveluation::evelutaion(int position[][BOARD_NUM], int isWhite)
 	*/
 	if (isWhite==WHITE)
 	{
+		if (TypeCount[BLACK][FIVE])
+		{
+			return 20000;
+		}
+
 		if (TypeCount[WHITE][FIVE])
 		{
 			return -20000;
+		}		
+	}
+	else//黑子
+	{
+		if (TypeCount[WHITE][FIVE])
+		{
+			return 20000;
 		}
 
 		if (TypeCount[BLACK][FIVE])
 		{
-			return 20000;
-		}
-	}
-	else//黑子
-	{
-		if (TypeCount[BLACK][FIVE])
-		{
 			return -20000;
 		}
-		if (TypeCount[WHITE][FIVE])
-		{
-			return 20000;
-		}
+		
 	}
 
 	//两个冲四相当于一个活四
@@ -175,12 +177,12 @@ int Eveluation::evelutaion(int position[][BOARD_NUM], int isWhite)
 		//白子四连
 		if (TypeCount[WHITE][FOUR])
 		{
-			white_value += 5000;
+			white_value += 7000;
 		}
 
 		if (TypeCount[WHITE][SFOUR])
 		{
-			white_value += 3000;
+			white_value += 5000;
 		}
 
 		if (TypeCount[BLACK][THREE])
@@ -244,12 +246,12 @@ int Eveluation::evelutaion(int position[][BOARD_NUM], int isWhite)
 		//黑子四连
 		if (TypeCount[BLACK][FOUR])
 		{
-			black_value += 5000;
+			black_value += 7000;
 		}
 
 		if (TypeCount[BLACK][SFOUR])
 		{
-			black_value += 3000;
+			black_value += 5000;
 		}
 
 		//活三

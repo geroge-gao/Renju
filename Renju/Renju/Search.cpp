@@ -107,7 +107,6 @@ int Search::AlphaBeta(int depth, int alpha, int beta)
 			}
 			best = i;//保存当前最大节点
 		}
-
 		if (alpha > beta)//beta剪枝
 			break;
 	}

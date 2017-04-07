@@ -1,3 +1,5 @@
-﻿  Search.cpp
+﻿  eveluation.cpp
+  Search.cpp
 e:\myrespository\renju\renju\renju\search.cpp(84): warning C4101: “over”: 未引用的局部变量
+  正在生成代码...
   Renju.vcxproj -> E:\MyRespository\Renju\Renju\Debug\Renju.exe
