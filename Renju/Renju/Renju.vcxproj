@@ -77,6 +77,7 @@
     </ClCompile>
     <Link>
       <GenerateDebugInformation>true</GenerateDebugInformation>
+      <SubSystem>Console</SubSystem>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
@@ -122,15 +123,19 @@
     <ClInclude Include="eveluation.h" />
     <ClInclude Include="Generator.h" />
     <ClInclude Include="history_heuristic.h" />
+    <ClInclude Include="NegaScout.h" />
     <ClInclude Include="resource.h" />
     <ClInclude Include="search.h" />
+    <ClInclude Include="TranspositionTable.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="eveluation.cpp" />
     <ClCompile Include="Generator.cpp" />
     <ClCompile Include="history_heuristic.cpp" />
     <ClCompile Include="main.cpp" />
+    <ClCompile Include="NegaScout.cpp" />
     <ClCompile Include="Search.cpp" />
+    <ClCompile Include="TranspositionTable.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="Renju.rc" />

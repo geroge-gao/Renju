@@ -1,7 +1,6 @@
 #include"search.h"
 #include<math.h>
 #include<string.h>
-#include<stdio.h>
 
 Search::Search()
 {

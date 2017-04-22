@@ -13,7 +13,12 @@ HistoryHeuristic::~HistoryHeuristic()
 
 void HistoryHeuristic::ResetHistoryTable()
 {
-	memset(History_Table, 10, BOARD_COUNT * sizeof(int));//初始化历史表
+	//初始化历史表
+	for(int i=0;i<BOARD_NUM;i++)
+		for (int j = 0; j < BOARD_NUM; j++)
+		{
+			History_Table[i][j] = 10;
+		}
 }
 
 
@@ -53,7 +58,6 @@ int HistoryHeuristic::Partition(ChessMove *source, int low, int high)
 		source[high] = source[low];
 	}
 	source[low] = temp;
-
 	return low;
 }
 

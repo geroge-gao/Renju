@@ -3,6 +3,7 @@
 #include"define.h"
 #include"Generator.h"
 #include"history_heuristic.h" 
+#include"NegaScout.h"
 using namespace std;
 
 //计算机棋盘
@@ -62,16 +63,21 @@ void Print(char a[][BOARD_NUM])
 int main()
 {
 	int a, b;//人类选手要下的位置
- 	int depth=2;//当前搜索深度为三层
+ 	int depth=4;//当前搜索深度为三层
 	Search s;//创建搜索引擎
+	NegaScout ns;//搜索引擎
 	HistoryHeuristic hh;
 	Eveluation evel;
 	MoveGenerator mg;	
 
-	s.SetSearchDepth(depth);//设置搜索深度
-	s.SetHistoryHeuristic(&hh);//设置历史启发器
-	s.SetEveluation(&evel);//设置评估函数
-	s.SetMoveGenerator(&mg);//设置走法器
+	//s.SetSearchDepth(depth);//设置搜索深度
+	//s.SetHistoryHeuristic(&hh);//设置历史启发器
+	//s.SetEveluation(&evel);//设置评估函数
+	//s.SetMoveGenerator(&mg);//设置走法器
+	ns.SetSearchDepth(depth);
+	ns.SetHistoryHeuristic(&hh);
+	ns.SetEveluation(&evel);
+	ns.SetMoveGenerator(&mg);
 	memset(curpos, NOCHESS, sizeof(curpos));//初始化棋盘
 	Transfer();
 	Print(pos);
@@ -81,16 +87,14 @@ int main()
 		cout << "please input:";
 		cin >> a >> b;
  		curpos[a - 1][b - 1] = BLACK;//自己先手黑子，电脑默认为白子
-		t=s.SearchGoodMove(curpos, WHITE);
+		t=ns.SearchGoodMove(curpos, WHITE);
 		system("CLS");
 		Transfer();
 		Print(pos);
 	}
-
 	if (t >0)
 		printf("电脑胜!\n");
 	else
 		printf("恭喜你，胜利!\n");
-	system("pause");
 	return 0;
 }
